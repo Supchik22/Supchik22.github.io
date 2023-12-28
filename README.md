@@ -1,2 +1,2 @@
 # snake
-Snake game
+A set of HTML games
