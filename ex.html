@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Number</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    #game-container {
+      text-align: center;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Вгадай чісло</h1>
+    <p>Вгадай чісло між 1 та 100:</p>
+    <input type="number" id="userGuess" min="1" max="100">
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p id="result"></p>
+    <button onclick="resetGame()">Play Again</button>
+  </div>
+
+  <script>
+    let secretNumber;
+    let attempts = 0;
+    let maxAttempts = 10;
+
+    function startGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById('result').innerText = '';
+    }
+
+    function checkGuess() {
+      const userGuessInput = document.getElementById('userGuess');
+      const resultDisplay = document.getElementById('result');
+
+      if (userGuessInput.value === '') {
+        resultDisplay.innerText = 'Будьласка напиши чісло';
+        return;
+      }
+
+      const userGuess = parseInt(userGuessInput.value);
+      attempts++;
+
+      if (userGuess === secretNumber) {
+        resultDisplay.innerText = `Ти вгадав число за ${attempts} раза(ів).`;
+        disableInputAndButton();
+      } else if (userGuess < secretNumber) {
+        resultDisplay.innerText = 'Чісло більше.';
+      } else {
+        resultDisplay.innerText = 'Чісло менше.';
+      }
+
+      if (attempts === maxAttempts) {
+        resultDisplay.innerText = `Ти не вгадав чісло! а це був ${secretNumber}.`;
+        disableInputAndButton();
+      }
+    }
+
+    function disableInputAndButton() {
+      document.getElementById('userGuess').disabled = true;
+      document.querySelector('button').disabled = true;
+    }
+
+    function resetGame() {
+      document.getElementById('userGuess').value = '';
+      document.getElementById('userGuess').disabled = false;
+      document.querySelector('button').disabled = false;
+      startGame();
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
+
