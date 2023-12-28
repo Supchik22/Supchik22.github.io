@@ -174,7 +174,12 @@
     }
 
     function shareScore() {
-      TelegramGameProxy.shareScore(score);
+
+    const request = new Request(`/setScore?uid=${uid}&imid=${imid}&score=${score}`);
+fetch(request).then(response => console.log("set score"));
+      
+      TelegramGameProxy.shareScore();
+      
     }
 
     document.addEventListener("keydown", (event) => {
