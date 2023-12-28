@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Challenge</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    #gameContainer {
+      text-align: center;
+    }
+
+    #question {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    #answerInput {
+      font-size: 18px;
+      padding: 5px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer">
+    <div id="question"></div>
+    <input type="text" id="answerInput" placeholder="Your answer">
+    <button onclick="checkAnswer()">Submit Answer</button>
+    <div id="result"></div>
+    <p id="timer">Time remaining: <span id="time">10</span> seconds</p>
+  </div>
+
+  <script>
+    let timer;
+    let timeRemaining = 10;
+
+    function startGame() {
+      generateQuestion();
+      updateTimer();
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function generateQuestion() {
+      const num1 = Math.floor(Math.random() * 10) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      const operator = ['+', '-', 'x'][Math.floor(Math.random() * 3)];
+
+      const questionElement = document.getElementById('question');
+      questionElement.textContent = `Solve: ${num1} ${operator} ${num2}`;
+      document.getElementById('answerInput').value = '';
+    }
+
+    function updateTimer() {
+      const timeElement = document.getElementById('time');
+      timeElement.textContent = timeRemaining;
+
+      if (timeRemaining === 0) {
+        endGame();
+      } else {
+        timeRemaining--;
+      }
+    }
+
+    function checkAnswer() {
+      const answerInput = document.getElementById('answerInput').value;
+      const resultElement = document.getElementById('result');
+
+      if (answerInput.trim() === '') {
+        resultElement.textContent = 'Please enter an answer.';
+      } else {
+        const answer = eval(document.getElementById('question').textContent.replace('Solve: ', ''));
+        if (parseInt(answerInput, 10) === answer) {
+          resultElement.textContent = 'Correct! Well done.';
+        } else {
+          resultElement.textContent = 'Incorrect. Try again.';
+        }
+
+        // Generate a new question
+        generateQuestion();
+      }
+    }
+
+    function endGame() {
+      clearInterval(timer);
+      document.getElementById('result').textContent = 'Time is up. Game over!';
+      document.getElementById('timer').style.display = 'none';
+      document.getElementById('answerInput').disabled = true;
+    }
+
+    // Start the game when the page loads
+    startGame();
+  </script>
+</body>
+</html>
+
